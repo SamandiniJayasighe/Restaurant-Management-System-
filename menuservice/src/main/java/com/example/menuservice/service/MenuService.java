@@ -84,7 +84,7 @@ public class MenuService {
 
     public MenuItem addMenuItem(Long menuId, MenuItem menuItem, MultipartFile image) throws IOException {
         String imagePath = imageUploadService.uploadImage(image);
-        String imageUrl = "/images" + Paths.get(imagePath).getFileName().toString();
+        String imageUrl = Paths.get(imagePath).getFileName().toString();
         menuItem.setImageUrl(imageUrl);
 
         return menuRepository.findById(menuId)
@@ -113,7 +113,7 @@ public class MenuService {
 
     public MenuItem updateMenuItem(Long id, MenuItem menuItemDetails, MultipartFile image) throws IOException {
         String imagePath = imageUploadService.uploadImage(image);
-        String imageUrl = "/images" + Paths.get(imagePath).getFileName().toString();
+        String imageUrl = Paths.get(imagePath).getFileName().toString();
         return menuItemRepository.findById(id)
                 .map(menuItem -> {
                     menuItem.setName(menuItemDetails.getName());
