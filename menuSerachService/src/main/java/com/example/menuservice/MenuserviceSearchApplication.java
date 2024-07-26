@@ -6,10 +6,10 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-public class MenuserviceApplication {
+public class MenuserviceSearchApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MenuserviceApplication.class, args);
+		SpringApplication.run(MenuserviceSearchApplication.class, args);
 	}
 
 }
