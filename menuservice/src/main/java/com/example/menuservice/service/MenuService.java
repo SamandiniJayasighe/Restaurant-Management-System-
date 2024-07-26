@@ -5,12 +5,16 @@ import com.example.menuservice.models.MenuItem;
 import com.example.menuservice.repository.MenuItemRepository;
 import com.example.menuservice.repository.MenuRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -25,6 +29,10 @@ public class MenuService {
 
     @Autowired
     private ImageUploadService imageUploadService;
+
+    @Autowired
+    private RestTemplate restTemplate;
+
 
     public List<Menu> getAllMenus(){
         return menuRepository.findAll();
@@ -43,7 +51,17 @@ public class MenuService {
     }
 
     public Menu createMenu(Menu menu){
-        return menuRepository.save(menu);
+        ResponseEntity<Map> response = restTemplate.exchange(
+            "http://restaurant-service/api/restaurants/{restaurantsr_id}" + menu.getRestaurantId(), 
+            HttpMethod.GET, 
+            null, 
+            Map.class
+        );
+        if (response.getStatusCode().is2xxSuccessful()) {
+            return menuRepository.save(menu);
+        }else{
+            throw new RuntimeException("Restaurant Not Found!");
+        }
     }
 
     public Menu updateMenu(Long id, Menu menuDetails){
